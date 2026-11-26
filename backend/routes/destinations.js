@@ -56,7 +56,7 @@ const destinations = [
     budget: 12000,
     description: "Explore dramatic Himalayan landscapes and high-altitude lakes.",
     attractions: ["Pangong Lake", "Nubra Valley", "Khardung La"],
-    image: "https://images.unsplash.com/photo-1566837497312-7be4a2c4e7a4?w=900"
+    image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=900"
   },
   {
     id: 6,
@@ -89,18 +89,21 @@ const destinations = [
     budget: 7500,
     description: "Relax among rolling green tea plantations.",
     attractions: ["Tea Gardens", "Eravikulam National Park", "Mattupetty Dam"],
-    image: "https://images.unsplash.com/photo-1562649846-1b0e8a6b1a3e?w=900"
+    image: "https://images.unsplash.com/photo-1593693397690-362cb9666fc2?w=900"
   }
 ];
 
+// Get all destinations with optional search and filters
 router.get("/", (req, res) => {
   const { search, region, category } = req.query;
+
   let result = destinations;
 
   if (search) {
     result = result.filter(d =>
       `${d.name} ${d.state} ${d.description}`
-        .toLowerCase().includes(search.toLowerCase())
+        .toLowerCase()
+        .includes(search.toLowerCase())
     );
   }
 
@@ -115,13 +118,16 @@ router.get("/", (req, res) => {
   res.json(result);
 });
 
+// Get one destination by ID
 router.get("/:id", (req, res) => {
   const destination = destinations.find(
     d => d.id === Number(req.params.id)
   );
 
   if (!destination) {
-    return res.status(404).json({ message: "Destination not found" });
+    return res.status(404).json({
+      message: "Destination not found"
+    });
   }
 
   res.json(destination);
